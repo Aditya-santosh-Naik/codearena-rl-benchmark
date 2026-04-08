@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 
 from .models import CodeArenaObservation, CodeArenaAction, TaskInfo
 from .executor import run_code_with_tests
-from .grader import calculate_reward
+from .grader import calculate_reward, safe_reward
 from tasks import ALL_TASKS
 
 class CodeArenaEnv:
@@ -42,7 +42,7 @@ class CodeArenaEnv:
         )
         
         # Calculate Reward
-        reward = calculate_reward(exec_result, self.current_task)
+        reward = safe_reward(calculate_reward(exec_result, self.current_task))
         
         # Update State
         self.previous_attempts.append(action.proposed_fix)

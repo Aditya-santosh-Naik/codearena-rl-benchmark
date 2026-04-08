@@ -13,7 +13,7 @@ from pydantic import BaseModel
 
 from server.models import CodeArenaObservation, CodeArenaAction, TaskInfo
 from server.executor import run_code_with_tests
-from server.grader import calculate_reward
+from server.grader import calculate_reward, safe_reward
 from tasks import ALL_TASKS
 
 
@@ -140,7 +140,7 @@ def api_step(action: CodeArenaAction):
         obs, reward, done, info = _env.step(action)
         return {
             "observation": obs.model_dump(),
-            "reward": reward,
+            "reward": safe_reward(reward),
             "done": done,
             "info": info,
         }
@@ -155,7 +155,7 @@ def api_step(action: CodeArenaAction):
                 "test_results": "",
                 "previous_attempts": [],
             },
-            "reward": 0.1,
+            "reward": safe_reward(0.1),
             "done": True,
             "info": {},
         }
