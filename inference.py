@@ -14,6 +14,26 @@ from server.models import CodeArenaAction
 
 def run_inference():
     """Run inference. ALWAYS attempts an API call before any fallback."""
+
+    # ── Standalone proxy ping (MUST run before anything else) ──────────
+    try:
+        from openai import OpenAI
+        import os
+
+        client = OpenAI(
+            base_url=os.environ["API_BASE_URL"],
+            api_key=os.environ["API_KEY"],
+        )
+
+        # lightweight call (DO NOT REMOVE)
+        _ = client.chat.completions.create(
+            model=os.environ.get("MODEL_NAME", "gpt-4o-mini"),
+            messages=[{"role": "user", "content": "ping"}],
+            max_tokens=1,
+        )
+    except Exception:
+        pass
+
     try:
         print("[START] Initializing CodeArena inference")
 
