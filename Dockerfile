@@ -15,5 +15,5 @@ COPY . .
 # Required for HF Spaces: Expose default port 7860
 EXPOSE 7860
 
-# FastAPI server running on 0.0.0.0
-CMD ["uvicorn", "server.env:app", "--host", "0.0.0.0", "--port", "7860"]
+# FastAPI server — points to the new production entrypoint
+CMD ["uvicorn", "server.app:app", "--host", "0.0.0.0", "--port", "7860"]

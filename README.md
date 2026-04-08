@@ -1,3 +1,12 @@
+---
+title: CodeArena RL Agent
+emoji: 🤖
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+---
+
 # CodeArena: RL Benchmark for Autonomous Code Repair
 
 CodeArena is an OpenEnv-compatible reinforcement learning benchmark for testing the capability of autonomous agents to debug, fix, and optimize broken code.
@@ -26,6 +35,15 @@ The reward dynamically evaluates partial success bounded universally between 0.0
 - `0.4 * test_pass_ratio`: Proportional points based on the number of passed unit tests.
 - `0.3 * efficiency_score`: Proportional points based on the execution speed relative to an established optimal algorithmic runtime. (Efficiency is only considered if all tests pass).
 
+## API Endpoints
+
+| Method | Path     | Description                          |
+|--------|----------|--------------------------------------|
+| POST   | `/reset` | Reset env. Body: `{"task_id":"easy"}`|
+| POST   | `/step`  | Submit fix. Body: `{"proposed_fix":"..."}` |
+| GET    | `/state` | Get current observation              |
+| GET    | `/`      | Health check                         |
+
 ## Setup Instructions
 
 ### Local Setup
@@ -33,19 +51,25 @@ The reward dynamically evaluates partial success bounded universally between 0.0
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-uvicorn server.env:app --reload --port 7860
+uvicorn server.app:app --reload --port 7860
 ```
 
-### Docker / Hugging Face Spaces Deployment
-The included `Dockerfile` is optimized for a 2 CPU, 8GB RAM footprint.
+### Docker Build & Run
 ```bash
 docker build -t codearena .
 docker run -p 7860:7860 codearena
 ```
 
-## Example Run
+### Test the /reset endpoint
+```bash
+curl -X POST http://localhost:7860/reset \
+  -H "Content-Type: application/json" \
+  -d '{"task_id": "easy"}'
+```
 
-To test the environment natively with OpenAI's API:
+## Example Inference Run
+
+To test the environment with OpenAI's API:
 ```bash
 export OPENAI_API_KEY="sk-..."
 python inference.py

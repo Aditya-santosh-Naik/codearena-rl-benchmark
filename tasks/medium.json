@@ -1,0 +1,8 @@
+{
+  "task_id": "medium-1",
+  "difficulty": "medium",
+  "description": "Fix the logical bug in the binary search implementation.",
+  "buggy_code": "def binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left < right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid\n        else:\n            right = mid - 1\n    return -1",
+  "test_code": "\nimport unittest\nclass TestMedium(unittest.TestCase):\n    def test_found_middle(self):\n        self.assertEqual(binary_search([1, 2, 3, 4, 5], 3), 2)\n    def test_found_edges(self):\n        self.assertEqual(binary_search([1, 2, 3, 4, 5], 1), 0)\n        self.assertEqual(binary_search([1, 2, 3, 4, 5], 5), 4)\n    def test_not_found(self):\n        self.assertEqual(binary_search([1, 2, 3, 4, 5], 6), -1)\n    def test_empty(self):\n        self.assertEqual(binary_search([], 1), -1)\n    def test_single_element(self):\n        self.assertEqual(binary_search([5], 5), 0)\n        self.assertEqual(binary_search([5], 3), -1)\n",
+  "optimal_time_seconds": 0.05
+}
