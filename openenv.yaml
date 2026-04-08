@@ -1,0 +1,17 @@
+version: "1.0"
+environment:
+  name: "CodeArena"
+  description: "RL Benchmark for Autonomous Code Repair"
+capabilities:
+  - execute_code
+  - calculate_reward
+endpoints:
+  reset: "/reset"
+  step: "/step"
+  state: "/state"
+dependencies:
+  - python: 3.10
+metrics:
+  - compile_score
+  - test_pass_ratio
+  - efficiency_score
