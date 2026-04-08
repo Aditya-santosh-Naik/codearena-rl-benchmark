@@ -10,7 +10,7 @@ def safe_reward(reward) -> float:
         r = float(reward)
     except Exception:
         return 0.5
-    return max(0.001, min(0.999, r))
+    return max(0.001, min(0.999, float(reward)))
 
 
 def normalize_reward(passed: int, total: int) -> float:

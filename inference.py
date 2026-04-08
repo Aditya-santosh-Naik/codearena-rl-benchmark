@@ -97,7 +97,7 @@ def run_task(task_id: str):
                 error_msg = str(e).replace("\n", " ").replace("\r", "")
 
         # 3e. Clamp it
-        reward = max(0.01, min(0.99, float(raw_reward)))
+        reward = max(0.001, min(0.999, float(raw_reward)))
         rewards.append(reward)
         
         # 3f. Print [STEP] line immediately
