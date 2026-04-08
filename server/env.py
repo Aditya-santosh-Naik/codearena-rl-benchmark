@@ -43,6 +43,7 @@ class CodeArenaEnv:
         
         # Calculate Reward
         reward = safe_reward(calculate_reward(exec_result, self.current_task))
+        reward = max(0.001, min(0.999, reward))
         
         # Update State
         self.previous_attempts.append(action.proposed_fix)

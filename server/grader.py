@@ -10,11 +10,7 @@ def safe_reward(reward) -> float:
         r = float(reward)
     except Exception:
         return 0.5
-    if r <= 0:
-        return 0.1
-    elif r >= 1:
-        return 0.9
-    return r
+    return max(0.001, min(0.999, r))
 
 
 def normalize_reward(passed: int, total: int) -> float:
@@ -25,11 +21,7 @@ def normalize_reward(passed: int, total: int) -> float:
     if total == 0:
         return 0.5
     reward = passed / total
-    if reward <= 0:
-        return 0.1
-    elif reward >= 1:
-        return 0.9
-    return float(reward)
+    return max(0.001, min(0.999, float(reward)))
 
 
 def calculate_reward(exec_result: ExecutionResult, task_info: TaskInfo) -> float:
@@ -39,3 +31,6 @@ def calculate_reward(exec_result: ExecutionResult, task_info: TaskInfo) -> float
     """
     reward = normalize_reward(exec_result.test_passed, exec_result.test_total)
     return safe_reward(reward)
+
+# Alias for OpenEnv grader
+grade = calculate_reward

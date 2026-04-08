@@ -1,17 +1,28 @@
-version: "1.0"
-environment:
-  name: "CodeArena"
-  description: "RL Benchmark for Autonomous Code Repair"
-capabilities:
-  - execute_code
-  - calculate_reward
-endpoints:
-  reset: "/reset"
-  step: "/step"
-  state: "/state"
-dependencies:
-  - python: 3.10
-metrics:
-  - compile_score
-  - test_pass_ratio
-  - efficiency_score
+name: codearena-rl-benchmark
+description: "RL Benchmark for Autonomous Code Repair — iterative debugging with execution feedback"
+version: "1.0.0"
+entrypoint: server.env:CodeArenaEnv
+
+runtime:
+  language: python
+  python_version: "3.11"
+
+api:
+  reset: /reset
+  step: /step
+  state: /state
+
+tasks:
+  - id: easy
+    path: tasks/easy.json
+    grader: server.grader:grade
+  - id: medium
+    path: tasks/medium.json
+    grader: server.grader:grade
+  - id: hard
+    path: tasks/hard.json
+    grader: server.grader:grade
+
+limits:
+  step_timeout_seconds: 2
+  max_runtime_minutes: 20
